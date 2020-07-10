@@ -5,16 +5,17 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ExportTest {
     @Test
@@ -40,5 +41,39 @@ public class ExportTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testStringUtils() {
+        Assertions.assertFalse(StringUtils.equals("Y", null));
+    }
+
+    @Test
+    public void testStream() {
+//        List<Person> personList = Lists.newArrayList();
+//        personList.add(Person.builder().name("张永名").age(27).build());
+//        personList.add(Person.builder().name("呵呵哒").age(29).build());
+//
+//        List<String> nameList = Lists.newArrayList();
+//
+//        personList.stream().peek(person -> nameList.add(person.getName())).mapToInt(Person::getAge).forEach(System.out::println);
+//
+//        nameList.forEach(System.out::println);
+
+
+        Map<Object, Set<Integer>> map = Stream.of(-6, -7, -8, -9, 1, 2, 3, 4, 5, 6)
+                .collect(Collectors.groupingBy(integer -> {
+                    if (integer < 0) {
+                        return "小于";
+                    } else if (integer == 0) {
+                        return "等于";
+                    } else {
+                        return "大于";
+                    }
+                },Collectors.toSet()));
+
+        map.forEach((k, v) ->{
+            System.out.println(k + ": " + v);
+        });
     }
 }
